@@ -36,10 +36,14 @@ public class MainActivity extends AppCompatActivity {
     private final String URL_STRING = "https://time-in.ru/coordinates/";
     // Logger
     private TextView mLogTextView;
+    // main layout of the MainActivity
+    private LinearLayout mainLayer;
     // map embedded in the map fragment
     private Map map = null;
     // map fragment embedded in this activity
     private SupportMapFragment mapFragment = null;
+    //Counter of MapMarkers created
+    private int count = 0;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mLogTextView = findViewById(R.id.title);
+        mainLayer = findViewById(R.id.linearLayOut);
         initialize();
     }
 
@@ -78,9 +83,6 @@ public class MainActivity extends AppCompatActivity {
                         map.setCenter(new GeoCoordinate(59.9386, 30.3141, 12.0), Map.Animation.NONE); //Set the center in Piter
                         // Set the zoom level to the average between min and max
                         map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 2);
-                        //Delete the logger from the Activity
-                        LinearLayout mainLayer = findViewById(R.id.linearLayOut);
-                        mainLayer.removeView(mLogTextView);
                         // Set all markers on the map
                         addArrayOfMarkers();
                     } else {
@@ -97,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    class ParsingPageTask extends AsyncTask<String, Void, String[]> {
+    class ParsingPageTask extends AsyncTask<String, String, String[]> {
 
         @Override
         protected String[] doInBackground(String... strings) {
@@ -107,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
             Document doc = null;
             try {
                 doc = Jsoup.connect(strings[0]).get();
+                publishProgress("Добавляем на карту город: " + strings[0].substring(URL_STRING.length()));
                 Element element = doc.select("div.coordinates-city-info").first();
                 Elements divs = element.select("div");
                 String s1 = divs.get(1).text();
@@ -121,11 +124,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
+        protected void onProgressUpdate(String... values) {
+            synchronized (mLogTextView) {
+                mLogTextView.setText(values[0]);
+            }
+        }
+
+        @Override
         protected void onPostExecute(String[] strings) {
             MapMarker marker = new MapMarker();
             marker.setCoordinate(new GeoCoordinate(Double.parseDouble(strings[0]), Double.parseDouble(strings[1]), Double.parseDouble(strings[2])));
             synchronized (map) {
                 map.addMapObject(marker);
+                count++;
+                if (count == regionsCapitals.length) {
+                    mainLayer.removeView(mLogTextView);
+                }
             }
         }
     }
