@@ -1,9 +1,11 @@
 package com.example.angryheatmap;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -49,6 +51,32 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        Intent intent;
+        switch (id) {
+            case R.id.actionSettings:
+                intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.actionVolume:
+                intent = new Intent(getApplicationContext(), VolumeActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.actionFire:
+                intent = new Intent(getApplicationContext(), FireActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.actionActions:
+                intent = new Intent(getApplicationContext(), ActionsActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

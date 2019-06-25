@@ -22,6 +22,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ActionsActivity"
+            android:label="@string/action_actions">
+        </activity>
+        <activity android:name=".FireActivity"
+            android:label="@string/action_fire">
+        </activity>
+        <activity android:name=".SettingsActivity"
+            android:label="@string/action_settings">
+        </activity>
+        <activity android:name=".VolumeActivity"
+            android:label="@string/action_volume">
+        </activity>
 
         <meta-data
             android:name="com.here.android.maps.appid"
