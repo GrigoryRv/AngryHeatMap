@@ -79,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void onSettingsMenuClick(MenuItem item) {
+        Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

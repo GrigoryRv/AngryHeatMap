@@ -34,6 +34,10 @@
         <activity android:name=".VolumeActivity"
             android:label="@string/action_volume">
         </activity>
+        <activity android:name=".AboutActivity"
+            android:label="@string/about_title"
+            android:theme="@style/Theme.AppCompat.Dialog">
+        </activity>
 
         <meta-data
             android:name="com.here.android.maps.appid"
